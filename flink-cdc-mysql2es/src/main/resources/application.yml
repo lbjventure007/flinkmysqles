@@ -1,0 +1,14 @@
+server:
+  port: 9001
+mysql-cdc-es:
+  infos:
+  ip: 127.0.0.1
+  port: 3306
+  dbs: db01
+  user: flinkcdc
+  pwd: flinkcdc
+  tables: db01.system_dept
+spring:
+  elasticsearch:
+    uris: http://localhost:9200
+
