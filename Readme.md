@@ -9,3 +9,9 @@
 
 # 说明
     es版本数据库版本 根据自己的需求 调整相关依赖 或者 相关参数依赖等
+# 遇到的问题
+    我的版本是java 19 SDK 执行 flink-cdc-mysql2es-2这个项目的时候 需增加VM option
+    --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.invoke=ALL-UNNAMED 
+    --add-opens java.base/java.math=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED
+    --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED 
+    --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.rmi/sun.rmi.transport=ALL-UNNAMED
