@@ -23,12 +23,22 @@ public class DataChangeSink implements SinkFunction<DataChangeInfo> {
         // 然后就可以使用封装的方法进行增删改操作了
         String data = dataChangeInfo.getData();
         log.info("########data={}",data);
+        System.out.println("########data={}"+data);
         SystemDept systemDept = JSONObject.parseObject(data, SystemDept.class);
+
         SystemDeptRepository bean = SpringUtil.getBean(SystemDeptRepository.class);
         // 初始化/新增/修改（非逻辑删除）
-        bean.save(systemDept);
-        // 删除/修改（逻辑删除）
-        // bean.delete(systemDept);
+        System.out.println("操作类型-----"+operatorType);
+        System.out.println("操作内容-----"+systemDept);
+        if (operatorType==1 || operatorType ==2) {
+            bean.save(systemDept);
+        }
+        if (operatorType ==3 ){
+            // 删除/修改（逻辑删除）
+             bean.delete(systemDept);
+        }
+
+
     }
 
 }

@@ -24,59 +24,71 @@ public class MysqlEventListener implements ApplicationRunner {
         try {
             StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             // 设置1个并行源任务
+
             env.setParallelism(1);
+
+
             StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+
+
             // 数据源表
             String sourceDDL =
                     """
-                            CREATE TABLE IF NOT EXISTS system_dept (
-                                id BIGINT,
-                                name VARCHAR(30),
-                                sort INT,
-                                leader_user_id BIGINT,
-                                phone VARCHAR(11),
-                                email VARCHAR(50),
-                                status TINYINT,
-                                creator VARCHAR(64),
-                                create_time TIMESTAMP(19),
-                                PRIMARY KEY(id) NOT ENFORCED
-                            ) WITH (
-                                'connector' = 'mysql-cdc',
-                                'hostname' = 'localhost',
-                                'port' = '3306',
-                                'username' = 'flinkcdc',
-                                'password' = 'flinkcdc',
-                                'database-name' = 'db01',
-                                'table-name' = 'system_dept'
-                            )
+                            create table product_view_source (
+                             `id` int,
+                             `user_id` int,
+                             `product_id` int,
+                             `server_id` int,
+                             `duration` int,
+                             `times` string,
+                             `time` timestamp,
+                             PRIMARY KEY (`id`) NOT ENFORCED) WITH (
+                             'connector' = 'mysql-cdc',
+                             'hostname' = 'localhost',
+                             'port' = '3306',
+                             'username' = 'root',
+                             'password' = '1234qwer',
+                             'database-name' = 'test',
+                             'table-name' = 'product_view'
+                             );
                             """;
             // 输出目标表
             String sinkDDL =
                     """
-                            CREATE TABLE IF NOT EXISTS system_dept_es (
-                                id BIGINT,
-                                name VARCHAR(30),
-                                sort INT,
-                                leader_user_id BIGINT,
-                                phone VARCHAR(11),
-                                email VARCHAR(50),
-                                status TINYINT,
-                                creator VARCHAR(64),
-                                create_time TIMESTAMP(19),
-                                PRIMARY KEY(id) NOT ENFORCED
-                            ) WITH (
-                                'connector' = 'elasticsearch-7',
-                                'hosts' = 'http://localhost:9200',
-                                'index' = 'system_dept_search',
-                                'sink.bulk-flush.max-actions' = '1'
-                            )
+                           
+                             
+                             CREATE TABLE product_view_index(
+                             `id` int,
+                             `user_id` int,
+                             `product_id` int,
+                             `server_id` int,
+                             `duration` int,
+                             `times` string,
+                             `time` timestamp,
+                               PRIMARY KEY (id) NOT ENFORCED
+                             ) WITH (
+                                 'connector' = 'elasticsearch-7',
+                                 'hosts' = 'http://localhost:9200',
+                                 'index' = 'product_view_index',
+                                 'username' = 'elastic',
+                                 'password' = 'elastic'
+                             );
                             """;
+
+
+
             // 简单的聚合处理
-            String transformSQL = "INSERT INTO system_dept_es SELECT * FROM system_dept";
+            String transformSQL = "insert into product_view_index select * from product_view_source;";
             log.info("============================");
             tableEnv.executeSql(sourceDDL);
             tableEnv.executeSql(sinkDDL);
+
+
+
             TableResult result = tableEnv.executeSql(transformSQL);
+
+
             result.print();
             env.executeAsync("mysql-cdc-es");
         } catch (Exception e) {
