@@ -7,7 +7,7 @@ mysql-cdc-es:
   dbs: user
   user: root
   pwd: 1234qwer
-  tables: user.system_dept
+  tables: user.system_dept,user.user
 spring:
   elasticsearch:
     uris: http://localhost:9200
