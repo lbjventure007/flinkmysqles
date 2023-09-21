@@ -1772,3 +1772,65 @@ java.lang.reflect.InaccessibleObjectException: Unable to make field private stat
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1291)
 	at com.lakudouzi.flink.FlinkCdcMysql2es2Application.main(FlinkCdcMysql2es2Application.java:10)
+10:09:19.383 [main] ERROR o.s.b.SpringApplication - [reportFailure,820] - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'systemDeptRepository' defined in com.lakudouzi.flink.cdc.repository.SystemDeptRepository defined in @EnableElasticsearchRepositories declared on FlinkCdcMysql2esApplication: Failed to instantiate [org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository]: Constructor threw exception
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1751)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:915)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:584)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:432)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1291)
+	at com.lakudouzi.flink.FlinkCdcMysql2esApplication.main(FlinkCdcMysql2esApplication.java:12)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository]: Constructor threw exception
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:223)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.lambda$instantiateClass$5(RepositoryFactorySupport.java:571)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.instantiateClass(RepositoryFactorySupport.java:571)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getTargetRepositoryViaReflection(RepositoryFactorySupport.java:536)
+	at org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory.getTargetRepository(ElasticsearchRepositoryFactory.java:74)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:317)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:279)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:245)
+	at org.springframework.data.util.Lazy.get(Lazy.java:114)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:285)
+	at org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactoryBean.afterPropertiesSet(ElasticsearchRepositoryFactoryBean.java:69)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1797)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1747)
+	... 16 common frames omitted
+Caused by: org.springframework.dao.DataAccessResourceFailureException: method [PUT], host [http://localhost:9200], URI [/system_dept_search], status line [HTTP/1.1 406 Not Acceptable]
+{"error":"Content-Type header [application/vnd.elasticsearch+json; compatible-with=8] is not supported","status":406}
+	at org.springframework.data.elasticsearch.client.elc.ElasticsearchExceptionTranslator.translateExceptionIfPossible(ElasticsearchExceptionTranslator.java:102)
+	at org.springframework.data.elasticsearch.client.elc.ElasticsearchExceptionTranslator.translateException(ElasticsearchExceptionTranslator.java:62)
+	at org.springframework.data.elasticsearch.client.elc.ChildTemplate.execute(ChildTemplate.java:73)
+	at org.springframework.data.elasticsearch.client.elc.IndicesTemplate.doCreate(IndicesTemplate.java:138)
+	at org.springframework.data.elasticsearch.client.elc.IndicesTemplate.createWithMapping(IndicesTemplate.java:128)
+	at org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository.<init>(SimpleElasticsearchRepository.java:84)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:484)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:210)
+	... 29 common frames omitted
+Caused by: java.lang.RuntimeException: method [PUT], host [http://localhost:9200], URI [/system_dept_search], status line [HTTP/1.1 406 Not Acceptable]
+{"error":"Content-Type header [application/vnd.elasticsearch+json; compatible-with=8] is not supported","status":406}
+	at org.springframework.data.elasticsearch.client.elc.ElasticsearchExceptionTranslator.translateException(ElasticsearchExceptionTranslator.java:61)
+	... 37 common frames omitted
+Caused by: org.elasticsearch.client.ResponseException: method [PUT], host [http://localhost:9200], URI [/system_dept_search], status line [HTTP/1.1 406 Not Acceptable]
+{"error":"Content-Type header [application/vnd.elasticsearch+json; compatible-with=8] is not supported","status":406}
+	at org.elasticsearch.client.RestClient.convertResponse(RestClient.java:347)
+	at org.elasticsearch.client.RestClient.performRequest(RestClient.java:313)
+	at org.elasticsearch.client.RestClient.performRequest(RestClient.java:288)
+	at co.elastic.clients.transport.rest_client.RestClientTransport.performRequest(RestClientTransport.java:147)
+	at co.elastic.clients.elasticsearch.indices.ElasticsearchIndicesClient.create(ElasticsearchIndicesClient.java:266)
+	at org.springframework.data.elasticsearch.client.elc.IndicesTemplate.lambda$doCreate$0(IndicesTemplate.java:138)
+	at org.springframework.data.elasticsearch.client.elc.ChildTemplate.execute(ChildTemplate.java:71)
+	... 36 common frames omitted
